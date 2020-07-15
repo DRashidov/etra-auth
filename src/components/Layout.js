@@ -8,6 +8,9 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100vh',
   },
+  grid: {
+    height: '100%',
+  },
 });
 
 export default function Layout({ children }) {
@@ -15,8 +18,13 @@ export default function Layout({ children }) {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3} justify='center' alignItems='center'>
-        <Grid item xs={6}>
+      <Grid
+        container
+        justify='center'
+        alignItems='center'
+        className={classes.grid}
+      >
+        <Grid item xs={12}>
           {children}
         </Grid>
       </Grid>
