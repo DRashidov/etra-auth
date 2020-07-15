@@ -2,13 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-// import CardActions from '@material-ui/core/CardActions';
-// import CardContent from '@material-ui/core/CardContent';
-// import Button from '@material-ui/core/Button';
-// import Typography from '@material-ui/core/Typography';
 
 import Tabs from './Tabs';
-
 import logo from '../static/images/ETRA-Logo.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,30 +24,58 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AUTH_FLOW = {
-  login: 'LOGIN',
-  register: 'REGISTER',
-};
+// const AUTH_FLOW = {
+//   login: 'LOGIN',
+//   register: 'REGISTER',
+// };
 
-const loginValues = {
+const initialLoginValues = {
   email: '',
   password: '',
+  step: 1,
+  loginError: false,
+  resetError: false,
+  emailForReset: ''
 };
 
 export default function AuthForm() {
   const classes = useStyles();
-  const [authFlow, setAuthFlow] = useState(AUTH_FLOW.login);
-  const [login, setLoginValues] = useState(loginValues);
+  const [loginValues, setLoginValues] = useState(initialLoginValues);
+  // const [authFlow, setAuthFlow] = useState(AUTH_FLOW.login);
+  // const [registerValues, setLoginValues] = useState(loginValues);
 
-  const nextStep = (step, handler) => {
-    handler(step + 1);
+  const handleLogin = () => {
+    if (loginValues.email === 'mail@mail.ru') {
+      if (loginValues.password === 'test123!#') {
+        setLoginValues((prevState) => ({
+          ...prevState,
+          loginError: false,
+        }));
+        document.location.href = 'https://www.google.com/';
+      }
+    } else {
+      setLoginValues((prevState) => ({
+        ...prevState,
+        loginError: true,
+      }));
+    }
   };
 
-  const prevStep = (step, handler) => {
-    handler(step - 1);
+  const handlePasswordReset = (e) => {
+    e.preventDefault();
+    setLoginValues((prevState) => ({
+      ...prevState,
+      step: 2,
+    }));
   };
 
-  const handleChange = (input) => (e) => {};
+  const handleLoginChange = (prop) => (event) => {
+    setLoginValues({ ...loginValues, [prop]: event.target.value });
+  };
+
+  // const handleRegisterChange= (prop) => (event) => {
+  //   setLoginValues({ ...values, [prop]: event.target.value });
+  // };
 
   return (
     <Paper elevation={3} className={classes.paper}>
@@ -61,7 +84,13 @@ export default function AuthForm() {
           <img alt='logo' src={logo} />
         </Grid>
       </Grid>
-      <Tabs />
+      <Tabs
+        handleLoginChange={handleLoginChange}
+        handleLogin={handleLogin}
+        loginValues={loginValues}
+        handlePasswordReset={handlePasswordReset}
+        setLoginValues={setLoginValues}
+      />
     </Paper>
   );
 }

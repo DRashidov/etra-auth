@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import LogingForm from './LogingForm';
+import LoginContainer from './LoginContainer';
 import RegisterForm from './RegisterForm';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '40px',
     textAlign: 'center',
   },
-  tabPanel: {
-    padding: '47px 80px 50px',
-  },
+  // tabPanel: {
+  //   padding: '47px 80px 50px',
+  // },
 }));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <div
@@ -37,7 +37,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box className={classes.tabPanel} p={3}>
+        // <Box className={classes.tabPanel} p={3}>
+        <Box>
           <Typography component={'span'} variant={'body2'}>
             {children}
           </Typography>
@@ -60,7 +61,13 @@ function a11yProps(index) {
   };
 }
 
-export default function TabsContainer() {
+export default function TabsContainer({
+  handleLoginChange,
+  loginValues,
+  handleLogin,
+  handlePasswordReset,
+  setLoginValues
+}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -76,6 +83,7 @@ export default function TabsContainer() {
           onChange={handleChange}
           aria-label='simple tabs example'
           className={classes.tabsWrapper}
+          TabIndicatorProps={{ style: { height: '4px' } }}
         >
           <Tab label='Вход' {...a11yProps(0)} className={classes.tab} />
           <Tab
@@ -86,7 +94,13 @@ export default function TabsContainer() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <LogingForm />
+        <LoginContainer
+          handleChange={handleLoginChange}
+          loginValues={loginValues}
+          handleLogin={handleLogin}
+          handlePasswordReset={handlePasswordReset}
+          setLoginValues={setLoginValues}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <RegisterForm />
