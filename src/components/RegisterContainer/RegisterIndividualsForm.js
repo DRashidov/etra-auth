@@ -26,6 +26,12 @@ const useStyles = makeStyles((theme) => ({
   checkBox: {
     padding: '0 20px 0 0',
   },
+  btnGoFurther: {
+    textTransform: 'capitalize',
+    marginTop: '50px',
+    padding: '8px 32px',
+    fontSize: '1rem',
+  },
 }));
 
 export default function RegisterIndividualsForm({
@@ -147,7 +153,7 @@ export default function RegisterIndividualsForm({
           <Button
             variant='contained'
             color='primary'
-            style={{ textTransform: 'capitalize', marginTop: '50px' }}
+            className={classes.btnGoFurther}
           >
             Подтвердить
           </Button>

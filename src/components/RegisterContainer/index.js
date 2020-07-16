@@ -90,10 +90,6 @@ export default function RegisterContainer() {
     setSecondStepValues({ ...secondStepValues, [prop]: event.target.value });
   };
 
-  const handleRegisterTypeChange = (event) => {
-    setRegisterType(event.target.value);
-  };
-
   const toggleEqualValues = () => {
     setSecondStepValues((prevState) => ({
       ...prevState,
@@ -108,7 +104,7 @@ export default function RegisterContainer() {
         aria-label='register type'
         name='registerType'
         value={registerType}
-        onChange={handleRegisterTypeChange}
+        onChange={e => setRegisterType(e.target.value)}
       >
         <FormControlLabel
           value={REGISTER_TYPE.individuals}
