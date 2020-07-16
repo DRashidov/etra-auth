@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   paperRegister: {
     width: 790,
     margin: 'auto',
-  },  
+  },
   header: {
     display: 'flex',
     justifyContent: 'center',
@@ -33,31 +33,23 @@ const AUTH_FLOW = {
   register: 'REGISTER',
 };
 
-
-
 export default function AuthForm() {
   const classes = useStyles();
   const [authFlow, setAuthFlow] = useState(AUTH_FLOW.login);
 
-  // const handleRegisterChange= (prop) => (event) => {
-  //   setLoginValues({ ...values, [prop]: event.target.value });
-  // };
+  // if (authFlow === AUTH_FLOW.login) {
+  //   return (
+  //     <Paper elevation={3} className={classes.paperLogin}>
+  //       <Grid container>
+  //         <Grid item className={classes.header}>
+  //           <img alt='logo' src={logo} />
+  //         </Grid>
+  //       </Grid>
+  //       <Tabs setAuthFlow={setAuthFlow} />
+  //     </Paper>
+  //   );
+  // }
 
-  if (authFlow === AUTH_FLOW.login) {
-    return (
-      <Paper elevation={3} className={classes.paperLogin}>
-        <Grid container>
-          <Grid item className={classes.header}>
-            <img alt='logo' src={logo} />
-          </Grid>
-        </Grid>
-        <Tabs
-          setAuthFlow={setAuthFlow}
-        />
-      </Paper>
-    );
-  }
-  
   return (
     <Paper elevation={3} className={classes.paperRegister}>
       <Grid container>
@@ -65,11 +57,7 @@ export default function AuthForm() {
           <img alt='logo' src={logo} />
         </Grid>
       </Grid>
-      <Tabs
-        setAuthFlow={setAuthFlow}
-      />
+      <Tabs setAuthFlow={setAuthFlow} />
     </Paper>
   );
-
-  
 }

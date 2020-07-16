@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import LoginContainer from './LoginContainer';
-import RegisterForm from './RegisterForm';
+import RegisterContainer from './RegisterContainer';
 
 const AUTH_FLOW = {
   login: 'LOGIN',
@@ -19,9 +19,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  tabsWrapper: {
+    '& .MuiTabs-flexContainer': {
+      justifyContent: 'center'
+    }
+  },  
   tab: {
     textTransform: 'capitalize',
-    marginLeft: '40px',
+    // marginLeft: '40px',
     textAlign: 'center',
   },
 }));
@@ -65,7 +70,7 @@ function a11yProps(index) {
 
 export default function TabsContainer({ setAuthFlow }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -94,7 +99,7 @@ export default function TabsContainer({ setAuthFlow }) {
         <LoginContainer />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <RegisterForm />
+        <RegisterContainer />
       </TabPanel>
     </div>
   );
