@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+// TODO: Add animation
+// import Switch from '@material-ui/core/Switch';
+// import Slide from '@material-ui/core/Slide';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Tabs from './Tabs';
 import logo from '../static/images/ETRA-Logo.png';
@@ -15,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   paperRegister: {
     width: 790,
     margin: 'auto',
+
+    zIndex: 1,
+    position: 'relative',
+    // margin: theme.spacing(1),
   },
   header: {
     display: 'flex',
@@ -60,4 +68,5 @@ export default function AuthForm() {
       <Tabs setAuthFlow={setAuthFlow} />
     </Paper>
   );
+  
 }

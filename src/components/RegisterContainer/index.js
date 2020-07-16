@@ -104,7 +104,7 @@ export default function RegisterContainer() {
         aria-label='register type'
         name='registerType'
         value={registerType}
-        onChange={e => setRegisterType(e.target.value)}
+        onChange={(e) => setRegisterType(e.target.value)}
       >
         <FormControlLabel
           value={REGISTER_TYPE.individuals}
