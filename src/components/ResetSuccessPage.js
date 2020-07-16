@@ -27,12 +27,12 @@ export default function ResetSuccessPage({ emailForReset, setLoginValues }) {
   const handleSubmit = () => {
     // reset to default values
     setLoginValues((prevState) => ({
+      ...prevState,
       email: '',
       password: '',
-      step: 1,
+      // step: 1,
+      // emailForReset: ''
       loginError: false,
-      resetError: false,
-      emailForReset: ''
     }));
   };
 

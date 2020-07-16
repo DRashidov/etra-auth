@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 });
 
 export default function LogingForm({
-  handleChange,
+  handleLoginValuesChange,
   loginValues,
   handleLogin,
   handlePasswordReset,
@@ -66,7 +66,7 @@ export default function LogingForm({
         label='Электронная почта'
         variant='outlined'
         value={loginValues.email}
-        onChange={handleChange('email')}
+        onChange={handleLoginValuesChange('email')}
       />
       <FormControl
         variant='outlined'
@@ -79,7 +79,7 @@ export default function LogingForm({
           id='outlined-adornment-password'
           type={showPassword ? 'text' : 'password'}
           value={loginValues.password}
-          onChange={handleChange('password')}
+          onChange={handleLoginValuesChange('password')}
           className={classes.passwordInput}
           endAdornment={
             <InputAdornment position='end'>

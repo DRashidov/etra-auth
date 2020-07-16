@@ -1,20 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import LoginForm from './LogingForm';
 import ResetPasswordForm from './ResetPasswordForm';
 import ResetSuccessPage from './ResetSuccessPage';
 
-export default function LoginContainer({
-  handleChange,
-  loginValues,
-  handleLogin,
-  handlePasswordReset,
-  setLoginValues,
-}) {
+const initialLoginValues = {
+  email: '',
+  password: '',
+  step: 1,
+  loginError: false,
+  emailForReset: '',
+};
+
+export default function LoginContainer() {
+  const [loginValues, setLoginValues] = useState(initialLoginValues);
+
+  const handleLogin = () => {
+    if (loginValues.email === 'mail@mail.ru') {
+      if (loginValues.password === 'test123!#') {
+        setLoginValues((prevState) => ({
+          ...prevState,
+          loginError: false,
+        }));
+        document.location.href = 'https://www.google.com/';
+      }
+    } else {
+      setLoginValues((prevState) => ({
+        ...prevState,
+        loginError: true,
+      }));
+    }
+  };
+
+  const handlePasswordReset = (e) => {
+    e.preventDefault();
+    setLoginValues((prevState) => ({
+      ...prevState,
+      step: 2,
+    }));
+  };
+
+  const handleLoginValuesChange = (prop) => (event) => {
+    setLoginValues({ ...loginValues, [prop]: event.target.value });
+  };
+
   if (loginValues.step === 1) {
     return (
       <LoginForm
-        handleChange={handleChange}
+        handleLoginValuesChange={handleLoginValuesChange}
         loginValues={loginValues}
         handleLogin={handleLogin}
         handlePasswordReset={handlePasswordReset}
@@ -26,8 +59,8 @@ export default function LoginContainer({
     return (
       <ResetPasswordForm
         emailForReset={loginValues.emailForReset}
-        resetError={loginValues.resetError}
         setLoginValues={setLoginValues}
+        handleLoginValuesChange={handleLoginValuesChange}
       />
     );
   }

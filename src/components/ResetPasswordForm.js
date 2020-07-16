@@ -44,13 +44,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ResetPasswordForm({
-  emailForReset,
-  resetError,
-  setLoginValues,
-}) {
+export default function ResetPasswordForm({ emailForReset, setLoginValues }) {
   const classes = useStyles();
   const [emailValue, setEmailValue] = useState(emailForReset);
+  const [hasInvalidEmailError, setHasInvalidEmailError] = useState(false);
+  const [hasNoSuchEmailError, setHasNoSuchEmailError] = useState(false);
 
   const goBack = () => {
     setLoginValues((prevState) => ({
@@ -60,7 +58,7 @@ export default function ResetPasswordForm({
   };
 
   const handleSubmit = () => {
-    if (emailValue === '') {
+    if (emailValue === '' || hasInvalidEmailError) {
       return;
     }
 
@@ -68,20 +66,34 @@ export default function ResetPasswordForm({
       setLoginValues((prevState) => ({
         ...prevState,
         step: 3,
-        resetError: false,
-        emailForReset: emailValue
+        emailForReset: emailValue,
       }));
     } else {
-      setLoginValues((prevState) => ({
-        ...prevState,
-        resetError: true,
-      }));
+      setHasNoSuchEmailError(true);
     }
   };
 
-  const errorText = 'Неверный адрес электронной почты';
+  const invalidEmailError = 'Неверный адрес электронной почты';
+  const noSuchEmailError = 'Адрес электронной почты не зарегистрирован';
 
-  console.log('RESET ERROR', resetError);
+  const handleBlur = () => {
+    if (emailValue === '') {
+      setHasInvalidEmailError(false);
+    }
+
+    if (emailValue !== '' && emailValue.indexOf('@') < 0) {
+      setHasInvalidEmailError(true);
+    }
+  };
+
+  const handleChange = (e) => {
+    if (hasInvalidEmailError) {
+      if (emailValue !== '' && emailValue.indexOf('@') > 0) {
+        setHasInvalidEmailError(false);
+      }
+    }
+    setEmailValue(e.target.value);
+  };
 
   return (
     <>
@@ -94,9 +106,15 @@ export default function ResetPasswordForm({
             label='Электронная почта'
             variant='outlined'
             value={emailValue}
-            onChange={e => setEmailValue(e.target.value)}
+            onBlur={handleBlur}
+            onChange={handleChange}
           />
-          {resetError && <span className={classes.errorMsg}>{errorText}</span>}
+          {hasInvalidEmailError && (
+            <span className={classes.errorMsg}>{invalidEmailError}</span>
+          )}
+          {hasNoSuchEmailError && (
+            <span className={classes.errorMsg}>{noSuchEmailError}</span>
+          )}
         </div>
 
         <Typography className={classes.helperText}>
@@ -122,6 +140,7 @@ export default function ResetPasswordForm({
               color='primary'
               onClick={handleSubmit}
               className={classes.btn}
+              disabled={emailValue === '' || hasInvalidEmailError}
             >
               Подтвердить
             </Button>

@@ -9,6 +9,11 @@ import Box from '@material-ui/core/Box';
 import LoginContainer from './LoginContainer';
 import RegisterForm from './RegisterForm';
 
+const AUTH_FLOW = {
+  login: 'LOGIN',
+  register: 'REGISTER',
+};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -19,9 +24,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '40px',
     textAlign: 'center',
   },
-  // tabPanel: {
-  //   padding: '47px 80px 50px',
-  // },
 }));
 
 function TabPanel(props) {
@@ -61,18 +63,13 @@ function a11yProps(index) {
   };
 }
 
-export default function TabsContainer({
-  handleLoginChange,
-  loginValues,
-  handleLogin,
-  handlePasswordReset,
-  setLoginValues
-}) {
+export default function TabsContainer({ setAuthFlow }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    newValue ? setAuthFlow(AUTH_FLOW.register) : setAuthFlow(AUTH_FLOW.login);
   };
 
   return (
@@ -81,7 +78,7 @@ export default function TabsContainer({
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label='simple tabs example'
+          aria-label='navigation tabs'
           className={classes.tabsWrapper}
           TabIndicatorProps={{ style: { height: '4px' } }}
         >
@@ -94,13 +91,7 @@ export default function TabsContainer({
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <LoginContainer
-          handleChange={handleLoginChange}
-          loginValues={loginValues}
-          handleLogin={handleLogin}
-          handlePasswordReset={handlePasswordReset}
-          setLoginValues={setLoginValues}
-        />
+        <LoginContainer />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <RegisterForm />
