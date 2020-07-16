@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tabsWrapper: {
     '& .MuiTabs-flexContainer': {
-      justifyContent: 'center'
+      justifyContent: 'space-evenly'
     }
   },  
   tab: {
