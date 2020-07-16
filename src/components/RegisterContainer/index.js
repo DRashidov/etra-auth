@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import RegisterIndividualsForm from './RegisterIndividualsForm';
 import RegisterLegalEntetiesForm from './RegisterLegalEntetiesForm';
+import RegisterSuccess from './RegisterSuccess';
 
 const useStyles = makeStyles((theme) => ({
   radioBtnsRoot: {
@@ -67,6 +68,7 @@ const legalEntetiesSecondStep = {
 export default function RegisterContainer() {
   const classes = useStyles();
   const [registerType, setRegisterType] = useState(initialRegisterType);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [individualValues, setIndividualValues] = useState(
     initialValuesIndividual
   );
@@ -97,6 +99,10 @@ export default function RegisterContainer() {
     }));
   };
 
+  if (isFormSubmitted) {
+    return <RegisterSuccess email={individualValues.email} />
+  }
+
   return (
     <>
       <RadioGroup
@@ -124,8 +130,10 @@ export default function RegisterContainer() {
         <RegisterIndividualsForm
           individualValues={individualValues}
           handleIndividualChange={handleIndividualChange}
+          setIsFormSubmitted={setIsFormSubmitted}
         />
       )}
+
       {registerType === REGISTER_TYPE.legalEntities && (
         <RegisterLegalEntetiesForm
           firstStepValues={firstStepValues}
@@ -133,6 +141,7 @@ export default function RegisterContainer() {
           handleFirstStepChange={handleFirstStepChange}
           handleSecondStepChange={handleSecondStepChange}
           toggleEqualValues={toggleEqualValues}
+          setIsFormSubmitted={setIsFormSubmitted}
         />
       )}
     </>

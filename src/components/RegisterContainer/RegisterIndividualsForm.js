@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 export default function RegisterIndividualsForm({
   individualValues,
   handleIndividualChange,
+  setIsFormSubmitted
 }) {
   const classes = useStyles();
   const [isAgree, setIsAgree] = useState(true);
@@ -154,6 +155,7 @@ export default function RegisterIndividualsForm({
             variant='contained'
             color='primary'
             className={classes.btnGoFurther}
+            onClick={() => setIsFormSubmitted(true)}
           >
             Подтвердить
           </Button>

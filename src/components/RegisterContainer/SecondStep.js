@@ -55,7 +55,8 @@ export default function SecondStep({
   setCurrentStep,
   secondStepValues,
   handleSecondStepChange,
-  toggleEqualValues
+  toggleEqualValues,
+  setIsFormSubmitted
 }) {
   const classes = useStyles();
   const [isAgree, setIsAgree] = useState(true);
@@ -270,8 +271,8 @@ export default function SecondStep({
           <Button
             variant='contained'
             color='primary'
-            onClick={() => setCurrentStep(2)}
             className={classes.btnSubmit}
+            onClick={() => setIsFormSubmitted(true)}
           >
             Подтвердить
           </Button>

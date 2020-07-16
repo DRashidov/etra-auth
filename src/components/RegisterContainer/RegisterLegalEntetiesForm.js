@@ -9,6 +9,7 @@ export default function RegisterLegalEntetiesForm({
   handleFirstStepChange,
   handleSecondStepChange,
   toggleEqualValues,
+  setIsFormSubmitted,
 }) {
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -29,6 +30,7 @@ export default function RegisterLegalEntetiesForm({
         handleSecondStepChange={handleSecondStepChange}
         setCurrentStep={setCurrentStep}
         toggleEqualValues={toggleEqualValues}
+        setIsFormSubmitted={setIsFormSubmitted}
       />
     );
   }

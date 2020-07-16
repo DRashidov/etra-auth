@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },  
   tab: {
-    textTransform: 'capitalize',
-    // marginLeft: '40px',
+    textTransform: 'none',
+    fontSize: '1rem',
     textAlign: 'center',
   },
 }));
