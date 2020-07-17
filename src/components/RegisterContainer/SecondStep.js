@@ -56,10 +56,16 @@ export default function SecondStep({
   secondStepValues,
   handleSecondStepChange,
   toggleEqualValues,
-  setIsFormSubmitted
+  setIsFormSubmitted,
+  setSubmittedFormType,
 }) {
   const classes = useStyles();
   const [isAgree, setIsAgree] = useState(true);
+
+  const handleSubmit = () => {
+    setSubmittedFormType('LEGAL ENTETIES');
+    setIsFormSubmitted(true);
+  };
 
   return (
     <div className={classes.root}>
@@ -136,7 +142,7 @@ export default function SecondStep({
             onChange={handleSecondStepChange('postalNumber')}
           />
         </Grid>
-        
+
         {/* Фактический адрес */}
         <Grid item xs={6} className={classes.gridItemLeft}>
           <Typography variant='body2' gutterBottom style={{ color: '#787878' }}>
@@ -243,8 +249,8 @@ export default function SecondStep({
             onClick={(event) => event.preventDefault()}
           >
             Пользовательского соглашения
-          </Link>
-          {' '}и даю свое согласие “ЭТРА” на обработку моей персональной информации
+          </Link>{' '}
+          и даю свое согласие “ЭТРА” на обработку моей персональной информации
           на условиях, определенных{' '}
           <Link
             href='#'
@@ -272,7 +278,7 @@ export default function SecondStep({
             variant='contained'
             color='primary'
             className={classes.btnSubmit}
-            onClick={() => setIsFormSubmitted(true)}
+            onClick={handleSubmit}
           >
             Подтвердить
           </Button>

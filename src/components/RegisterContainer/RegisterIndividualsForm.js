@@ -37,10 +37,16 @@ const useStyles = makeStyles((theme) => ({
 export default function RegisterIndividualsForm({
   individualValues,
   handleIndividualChange,
-  setIsFormSubmitted
+  setIsFormSubmitted,
+  setSubmittedFormType,
 }) {
   const classes = useStyles();
   const [isAgree, setIsAgree] = useState(true);
+
+  const handleSubmit = () => {
+    setSubmittedFormType('INDIVIDUALS');
+    setIsFormSubmitted(true);
+  };
 
   return (
     <div className={classes.root}>
@@ -136,8 +142,8 @@ export default function RegisterIndividualsForm({
             onClick={(event) => event.preventDefault()}
           >
             Пользовательского соглашения
-          </Link>
-          {' '}и даю свое согласие “ЭТРА” на обработку моей персональной информации
+          </Link>{' '}
+          и даю свое согласие “ЭТРА” на обработку моей персональной информации
           на условиях, определенных{' '}
           <Link
             href='#'
@@ -155,7 +161,7 @@ export default function RegisterIndividualsForm({
             variant='contained'
             color='primary'
             className={classes.btnGoFurther}
-            onClick={() => setIsFormSubmitted(true)}
+            onClick={handleSubmit}
           >
             Подтвердить
           </Button>

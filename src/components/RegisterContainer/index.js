@@ -67,6 +67,7 @@ const legalEntetiesSecondStep = {
 
 export default function RegisterContainer() {
   const classes = useStyles();
+  const [submittedFormType, setSubmittedFormType] = useState('');
   const [registerType, setRegisterType] = useState(initialRegisterType);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [individualValues, setIndividualValues] = useState(
@@ -100,7 +101,16 @@ export default function RegisterContainer() {
   };
 
   if (isFormSubmitted) {
-    return <RegisterSuccess email={individualValues.email} />
+    let emailToNotify;
+    if (submittedFormType === REGISTER_TYPE.individuals) {
+      emailToNotify = individualValues.email;
+    }
+
+    if (submittedFormType === REGISTER_TYPE.legalEntities) {
+      emailToNotify = firstStepValues.email;
+    }
+
+    return <RegisterSuccess email={emailToNotify} />;
   }
 
   return (
@@ -131,6 +141,7 @@ export default function RegisterContainer() {
           individualValues={individualValues}
           handleIndividualChange={handleIndividualChange}
           setIsFormSubmitted={setIsFormSubmitted}
+          setSubmittedFormType={setSubmittedFormType}
         />
       )}
 
@@ -142,6 +153,7 @@ export default function RegisterContainer() {
           handleSecondStepChange={handleSecondStepChange}
           toggleEqualValues={toggleEqualValues}
           setIsFormSubmitted={setIsFormSubmitted}
+          setSubmittedFormType={setSubmittedFormType}
         />
       )}
     </>
