@@ -139,7 +139,7 @@ export default function SecondStep({
     const formHasNoErrors = Object.values(newErrorTexts).every(
       (error) => error === ''
     );
-    console.log('formHasErrors', formHasNoErrors);
+    console.log('formHasNoErrors', formHasNoErrors);
 
     if (formHasNoErrors) {
       setSubmittedFormType('LEGAL ENTETIES');

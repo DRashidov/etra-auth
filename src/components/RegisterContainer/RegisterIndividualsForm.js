@@ -71,7 +71,6 @@ export default function RegisterIndividualsForm({
       'firstName',
       'fathersName',
       'city',
-      'country',
       'email',
     ];
     const newErrorTexts = {};
@@ -96,7 +95,7 @@ export default function RegisterIndividualsForm({
     const formHasNoErrors = Object.values(newErrorTexts).every(
       (error) => error === ''
     );
-    console.log('formHasErrors', formHasNoErrors);
+    console.log('formHasNoErrors', formHasNoErrors);
 
     if (formHasNoErrors) {
       // check if form is not empty
