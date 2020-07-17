@@ -45,18 +45,18 @@ export default function AuthForm() {
   const classes = useStyles();
   const [authFlow, setAuthFlow] = useState(AUTH_FLOW.login);
 
-  // if (authFlow === AUTH_FLOW.login) {
-  //   return (
-  //     <Paper elevation={3} className={classes.paperLogin}>
-  //       <Grid container>
-  //         <Grid item className={classes.header}>
-  //           <img alt='logo' src={logo} />
-  //         </Grid>
-  //       </Grid>
-  //       <Tabs setAuthFlow={setAuthFlow} />
-  //     </Paper>
-  //   );
-  // }
+  if (authFlow === AUTH_FLOW.login) {
+    return (
+      <Paper elevation={3} className={classes.paperLogin}>
+        <Grid container>
+          <Grid item className={classes.header}>
+            <img alt='logo' src={logo} />
+          </Grid>
+        </Grid>
+        <Tabs setAuthFlow={setAuthFlow} />
+      </Paper>
+    );
+  }
 
   return (
     <Paper elevation={3} className={classes.paperRegister}>

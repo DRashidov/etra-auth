@@ -78,17 +78,6 @@ export default function ResetPasswordForm({ emailForReset, setLoginValues }) {
     }
   };
 
-  // PREVIOUS VALUE
-  // const handleSubmit = () => {
-  //   if (emailValue === 'mail@mail.ru') {
-  //     setLoginValues((prevState) => ({
-  //       ...prevState,
-  //       step: 3,
-  //       emailForReset: emailValue,
-  //     }));
-  //   }
-  // };
-
   return (
     <>
       <form className={classes.root} noValidate autoComplete='off'>
