@@ -7,12 +7,38 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-
 import { makeStyles } from '@material-ui/core/styles';
+
+import { isCyrillic } from '../../utils/isCyrillic';
+import { ERROR_TYPES } from '../../constants/errorTypes';
+
+const addressErrors = {
+  country: '',
+  city: '',
+  street: '',
+  building: '',
+  apartment: '',
+  postalNumber: '',
+
+  actualCountry: '',
+  actualCity: '',
+  actualStreet: '',
+  actualBuilding: '',
+  actualAppartment: '',
+  actualPostalNumber: '',
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '0 40px 30px',
+    '& .MuiFormHelperText-root.Mui-error': {
+      position: 'absolute',
+      bottom: '-22px',
+      fontSize: '0.85rem',
+    },
+    '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+      display: 'none',
+    },
   },
   gridItemLeft: {
     paddingRight: '15px',
@@ -55,16 +81,76 @@ export default function SecondStep({
   setCurrentStep,
   secondStepValues,
   handleSecondStepChange,
-  toggleEqualValues,
   setIsFormSubmitted,
   setSubmittedFormType,
+  setSecondStepValues
 }) {
   const classes = useStyles();
   const [isAgree, setIsAgree] = useState(true);
+  const [errorsText, setErrorsText] = useState(addressErrors);
+  const [valuesAreEqual, setValuesAreEqual] = useState(false);
+
+  const toggleEqualValues = () => {
+    setValuesAreEqual(!valuesAreEqual);
+    setErrorsText((prevState) => ({
+      ...prevState,
+      actualCountry: '',
+      actualCity: '',
+      actualStreet: '',
+    }));
+
+    setSecondStepValues((prevState) => ({
+      ...prevState,
+      actualCountry: '',
+      actualCity: '',
+      actualStreet: '',
+      actualBuilding: '',
+      actualAppartment: '',
+      actualPostalNumber: '',
+    }))
+  };
 
   const handleSubmit = () => {
-    setSubmittedFormType('LEGAL ENTETIES');
-    setIsFormSubmitted(true);
+    const inputsToValidate = [
+      'country',
+      'city',
+      'street',
+      'building',
+      'apartment',
+      'postalNumber',
+
+      'actualCountry',
+      'actualCity',
+      'actualStreet',
+      'actualBuilding',
+      'actualAppartment',
+      'actualPostalNumber',
+    ];
+    const newErrorTexts = {};
+
+    inputsToValidate.forEach((field) => {
+      if (secondStepValues[field] !== '') {
+        const errorText = isCyrillic(secondStepValues[field])
+          ? ''
+          : ERROR_TYPES.nonCyrillic;
+        newErrorTexts[field] = errorText;
+      } else {
+        newErrorTexts[field] = '';
+      }
+    });
+
+    setErrorsText(newErrorTexts);
+    console.log(newErrorTexts);
+
+    const formHasNoErrors = Object.values(newErrorTexts).every(
+      (error) => error === ''
+    );
+    console.log('formHasErrors', formHasNoErrors);
+
+    if (formHasNoErrors) {
+      setSubmittedFormType('LEGAL ENTETIES');
+      setIsFormSubmitted(true);
+    }
   };
 
   return (
@@ -77,41 +163,47 @@ export default function SecondStep({
           </Typography>
           <TextField
             id='country-2'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
             type='text'
             label='Страна'
             variant='outlined'
             value={secondStepValues.country}
             onChange={handleSecondStepChange('country')}
+            error={!!errorsText.country}
+            helperText={errorsText.country}
           />
           <TextField
             id='city'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
             type='text'
             label='Населенный пункт'
             variant='outlined'
             value={secondStepValues.city}
             onChange={handleSecondStepChange('city')}
+            error={!!errorsText.city}
+            helperText={errorsText.city}
           />
           <TextField
             id='street'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
             type='text'
             label='Улица'
             variant='outlined'
             value={secondStepValues.street}
             onChange={handleSecondStepChange('street')}
+            error={!!errorsText.street}
+            helperText={errorsText.street}
           />
           <Grid container>
             <Grid item xs={6} style={{ paddingRight: '7px' }}>
               <TextField
                 id='building'
-                style={{ marginBottom: '15px' }}
+                style={{ marginBottom: '30px' }}
                 fullWidth
-                type='text'
+                type='number'
                 label='Дом'
                 variant='outlined'
                 value={secondStepValues.building}
@@ -121,9 +213,9 @@ export default function SecondStep({
             <Grid item xs={6} style={{ paddingLeft: '7px' }}>
               <TextField
                 id='apartment'
-                style={{ marginBottom: '15px' }}
+                style={{ marginBottom: '30px' }}
                 fullWidth
-                type='text'
+                type='number'
                 label='Квартира/Офис'
                 variant='outlined'
                 value={secondStepValues.apartment}
@@ -133,9 +225,9 @@ export default function SecondStep({
           </Grid>
           <TextField
             id='postalNumber'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
-            type='text'
+            type='number'
             label='Почтовый индекс'
             variant='outlined'
             value={secondStepValues.postalNumber}
@@ -150,83 +242,88 @@ export default function SecondStep({
           </Typography>
           <TextField
             id='actualCountry'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
             type='text'
             label='Страна'
             variant='outlined'
             value={secondStepValues.actualCountry}
             onChange={handleSecondStepChange('actualCountry')}
-            disabled={secondStepValues.valuesAreEquel}
+            disabled={valuesAreEqual} 
+            error={!!errorsText.actualCountry}
+            helperText={errorsText.actualCountry}
           />
           <TextField
             id='actualCity'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
             type='text'
             label='Населенный пункт'
             variant='outlined'
             value={secondStepValues.actualCity}
             onChange={handleSecondStepChange('actualCity')}
-            disabled={secondStepValues.valuesAreEquel}
+            disabled={valuesAreEqual}
+            error={!!errorsText.actualCity}
+            helperText={errorsText.actualCity}
           />
           <TextField
             id='actualStreet'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
             type='text'
             label='Улица'
             variant='outlined'
             value={secondStepValues.actualStreet}
             onChange={handleSecondStepChange('actualStreet')}
-            disabled={secondStepValues.valuesAreEquel}
+            disabled={valuesAreEqual}
+            error={!!errorsText.actualStreet}
+            helperText={errorsText.actualStreet}
           />
           <Grid container>
             <Grid item xs={6} style={{ paddingRight: '7px' }}>
               <TextField
                 id='actualBuilding'
-                style={{ marginBottom: '15px' }}
+                style={{ marginBottom: '30px' }}
                 fullWidth
-                type='text'
+                type='number'
                 label='Дом'
                 variant='outlined'
                 value={secondStepValues.actualBuilding}
                 onChange={handleSecondStepChange('actualBuilding')}
-                disabled={secondStepValues.valuesAreEquel}
+                disabled={valuesAreEqual}
               />
             </Grid>
             <Grid item xs={6} style={{ paddingLeft: '7px' }}>
               <TextField
                 id='actualAppartment'
-                style={{ marginBottom: '15px' }}
+                style={{ marginBottom: '30px' }}
                 fullWidth
-                type='text'
+                type='number'
                 label='Квартира/Офис'
                 variant='outlined'
                 value={secondStepValues.actualAppartment}
                 onChange={handleSecondStepChange('actualAppartment')}
-                disabled={secondStepValues.valuesAreEquel}
+                disabled={valuesAreEqual}
               />
             </Grid>
           </Grid>
           <TextField
             id='actualPostalNumber'
-            style={{ marginBottom: '15px' }}
+            style={{ marginBottom: '30px' }}
             fullWidth
-            type='text'
+            type='number'
             label='Почтовый индекс'
             variant='outlined'
             value={secondStepValues.actualPostalNumber}
             onChange={handleSecondStepChange('actualPostalNumber')}
-            disabled={secondStepValues.valuesAreEquel}
+            disabled={valuesAreEqual}
           />
         </Grid>
       </Grid>
       <div className={classes.adressesText}>
         <Checkbox
-          checked={secondStepValues.valuesAreEquel}
+          checked={valuesAreEqual}
           color='primary'
-          // value={secondStepValues.valuesAreEquel}
           onChange={toggleEqualValues}
           inputProps={{ 'aria-label': 'primary checkbox' }}
           className={classes.checkBox}

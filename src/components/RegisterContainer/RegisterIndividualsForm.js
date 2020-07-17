@@ -11,9 +11,19 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { isCyrillic } from '../../utils/isCyrillic';
+import { validateEmail } from '../../utils/validators';
+import { ERROR_TYPES } from '../../constants/errorTypes';
+import { REGISTER_TYPE } from '../../constants/registerTypes';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '0 40px 30px',
+    '& .MuiFormHelperText-root.Mui-error': {
+      position: 'absolute',
+      bottom: '-22px',
+      fontSize: '0.85rem',
+    },
   },
   gridItemLeft: {
     paddingRight: '15px',
@@ -37,6 +47,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialErrors = {
+  lastName: '',
+  firstName: '',
+  fathersName: '',
+  city: '',
+  email: '',
+};
+
 export default function RegisterIndividualsForm({
   individualValues,
   handleIndividualChange,
@@ -45,10 +63,47 @@ export default function RegisterIndividualsForm({
 }) {
   const classes = useStyles();
   const [isAgree, setIsAgree] = useState(true);
+  const [errorsText, setErrorsText] = useState(initialErrors);
 
   const handleSubmit = () => {
-    setSubmittedFormType('INDIVIDUALS');
-    setIsFormSubmitted(true);
+    const inputsToValidate = [
+      'lastName',
+      'firstName',
+      'fathersName',
+      'city',
+      'country',
+      'email',
+    ];
+    const newErrorTexts = {};
+
+    inputsToValidate.forEach((field) => {
+      if (field === 'email') {
+        const isCorrect = validateEmail(individualValues[field]);
+        newErrorTexts[field] = isCorrect ? '' : ERROR_TYPES.invalidEmail;
+      } else if (individualValues[field] !== '') {
+        const errorText = isCyrillic(individualValues[field])
+          ? ''
+          : ERROR_TYPES.nonCyrillic;
+        newErrorTexts[field] = errorText;
+      } else {
+        newErrorTexts[field] = '';
+      }
+    });
+
+    setErrorsText(newErrorTexts);
+    console.log(newErrorTexts);
+
+    const formHasNoErrors = Object.values(newErrorTexts).every(
+      (error) => error === ''
+    );
+    console.log('formHasErrors', formHasNoErrors);
+
+    if (formHasNoErrors) {
+      // check if form is not empty
+      // check if there are no errors
+      setSubmittedFormType(REGISTER_TYPE.individuals);
+      setIsFormSubmitted(true);
+    }
   };
 
   return (
@@ -64,6 +119,8 @@ export default function RegisterIndividualsForm({
             variant='outlined'
             value={individualValues.lastName}
             onChange={handleIndividualChange('lastName')}
+            error={!!errorsText.lastName}
+            helperText={errorsText.lastName}
           />
           <TextField
             id='firstName'
@@ -74,6 +131,8 @@ export default function RegisterIndividualsForm({
             variant='outlined'
             value={individualValues.firstName}
             onChange={handleIndividualChange('firstName')}
+            error={!!errorsText.firstName}
+            helperText={errorsText.firstName}
           />
           <TextField
             id='fathersName'
@@ -84,6 +143,8 @@ export default function RegisterIndividualsForm({
             variant='outlined'
             value={individualValues.fathersName}
             onChange={handleIndividualChange('fathersName')}
+            error={!!errorsText.fathersName}
+            helperText={errorsText.fathersName}
           />
         </Grid>
         <Grid item xs={6} className={classes.gridItemRight}>
@@ -96,9 +157,17 @@ export default function RegisterIndividualsForm({
             variant='outlined'
             value={individualValues.city}
             onChange={handleIndividualChange('city')}
+            error={!!errorsText.city}
+            helperText={errorsText.city}
           />
-          <FormControl variant='outlined' className={classes.formControl} style={{ width: '100%'}}>
-            <InputLabel htmlFor='outlined-country-native-simple'>Страна мобильного оператора</InputLabel>
+          <FormControl
+            variant='outlined'
+            className={classes.formControl}
+            style={{ width: '100%' }}
+          >
+            <InputLabel htmlFor='outlined-country-native-simple'>
+              Страна мобильного оператора
+            </InputLabel>
             <Select
               native
               value={individualValues.country}
@@ -110,21 +179,21 @@ export default function RegisterIndividualsForm({
                 id: 'outlined-country-native-simple',
               }}
             >
-              <option value={"Russia"}>Россия</option>
-              <option value={"Azerbaijan"}>Азербайджан</option>
-              <option value={"Armenia"}>Армения</option>
-              <option value={"Ukraine"}>Украина</option>
-              <option value={"Belarus"}>Беларусь</option>
-              <option value={"Moldova"}>Молдова</option>
-              <option value={"Latvia"}>Латвия</option>
-              <option value={"Lithuania"}>Литва</option>
-              <option value={"Estonia"}>Эстония</option>
-              <option value={"Georgia"}>Грузия</option>
-              <option value={"Kazakhstan"}>Казахстан</option>
-              <option value={"Kyrgyzstan"}>Киргизия</option>
-              <option value={"Tajikistan"}>Таджикистан</option>
-              <option value={"Turkmenistan"}>Туркмения</option>
-              <option value={"Uzbekistan"}>Узбекистан</option>        
+              <option value={'Russia'}>Россия</option>
+              <option value={'Azerbaijan'}>Азербайджан</option>
+              <option value={'Armenia'}>Армения</option>
+              <option value={'Ukraine'}>Украина</option>
+              <option value={'Belarus'}>Беларусь</option>
+              <option value={'Moldova'}>Молдова</option>
+              <option value={'Latvia'}>Латвия</option>
+              <option value={'Lithuania'}>Литва</option>
+              <option value={'Estonia'}>Эстония</option>
+              <option value={'Georgia'}>Грузия</option>
+              <option value={'Kazakhstan'}>Казахстан</option>
+              <option value={'Kyrgyzstan'}>Киргизия</option>
+              <option value={'Tajikistan'}>Таджикистан</option>
+              <option value={'Turkmenistan'}>Туркмения</option>
+              <option value={'Uzbekistan'}>Узбекистан</option>
             </Select>
           </FormControl>
           <TextField
@@ -146,6 +215,8 @@ export default function RegisterIndividualsForm({
             variant='outlined'
             value={individualValues.email}
             onChange={handleIndividualChange('email')}
+            error={!!errorsText.email}
+            helperText={errorsText.email}
           />
         </Grid>
       </Grid>

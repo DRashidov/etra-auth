@@ -50,8 +50,6 @@ const legalEntetiesFirstStep = {
 };
 
 const legalEntetiesSecondStep = {
-  valuesAreEquel: false,
-
   country: '',
   city: '',
   street: '',
@@ -98,24 +96,17 @@ export default function RegisterContainer() {
   const handleFirstStepChange = (prop) => (event) => {
     if (prop === 'country') {
       setFirstStepValues({
-        ...individualValues,
+        ...firstStepValues,
         [prop]: event.target.value,
         phoneNumber: COUNTRY_CODES[event.target.value],
       });
     } else {
-      setFirstStepValues({ ...individualValues, [prop]: event.target.value });
+      setFirstStepValues({ ...firstStepValues, [prop]: event.target.value });
     }
   };
 
   const handleSecondStepChange = (prop) => (event) => {
     setSecondStepValues({ ...secondStepValues, [prop]: event.target.value });
-  };
-
-  const toggleEqualValues = () => {
-    setSecondStepValues((prevState) => ({
-      ...prevState,
-      valuesAreEquel: !secondStepValues.valuesAreEquel,
-    }));
   };
 
   if (isFormSubmitted) {
@@ -169,9 +160,9 @@ export default function RegisterContainer() {
           secondStepValues={secondStepValues}
           handleFirstStepChange={handleFirstStepChange}
           handleSecondStepChange={handleSecondStepChange}
-          toggleEqualValues={toggleEqualValues}
           setIsFormSubmitted={setIsFormSubmitted}
           setSubmittedFormType={setSubmittedFormType}
+          setSecondStepValues={setSecondStepValues}
         />
       )}
     </>
