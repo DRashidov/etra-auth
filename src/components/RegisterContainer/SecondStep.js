@@ -16,16 +16,10 @@ const addressErrors = {
   country: '',
   city: '',
   street: '',
-  building: '',
-  apartment: '',
-  postalNumber: '',
 
   actualCountry: '',
   actualCity: '',
   actualStreet: '',
-  actualBuilding: '',
-  actualAppartment: '',
-  actualPostalNumber: '',
 };
 
 const useStyles = makeStyles((theme) => ({
