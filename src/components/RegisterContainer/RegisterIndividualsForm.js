@@ -62,7 +62,7 @@ export default function RegisterIndividualsForm({
   setSubmittedFormType,
 }) {
   const classes = useStyles();
-  const [isAgree, setIsAgree] = useState(true);
+  const [isAgree, setIsAgree] = useState(false);
   const [errorsText, setErrorsText] = useState(initialErrors);
 
   const handleSubmit = () => {
@@ -254,6 +254,7 @@ export default function RegisterIndividualsForm({
           <Button
             variant='contained'
             color='primary'
+            disabled={!isAgree}
             className={classes.btnGoFurther}
             onClick={handleSubmit}
           >

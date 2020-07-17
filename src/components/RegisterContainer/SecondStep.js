@@ -80,7 +80,7 @@ export default function SecondStep({
   setSecondStepValues
 }) {
   const classes = useStyles();
-  const [isAgree, setIsAgree] = useState(true);
+  const [isAgree, setIsAgree] = useState(false);
   const [errorsText, setErrorsText] = useState(addressErrors);
   const [valuesAreEqual, setValuesAreEqual] = useState(false);
 
@@ -370,6 +370,7 @@ export default function SecondStep({
             color='primary'
             className={classes.btnSubmit}
             onClick={handleSubmit}
+            disabled={!isAgree}
           >
             Подтвердить
           </Button>
