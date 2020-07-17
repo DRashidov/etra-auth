@@ -12,6 +12,10 @@ import { ERROR_TYPES } from '../../constants/errorTypes';
 const useStyles = makeStyles({
   root: {
     padding: '47px 80px 0',
+    '& .MuiFormHelperText-root.Mui-error': {
+      position: 'absolute',
+      bottom: '-22px',
+    },
   },
   inputWrapper: {
     marginBottom: '30px',
