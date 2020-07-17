@@ -6,6 +6,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
+import { validateEmail } from '../../utils/validators';
+import { ERROR_TYPES } from '../../constants/errorTypes';
+
 const useStyles = makeStyles({
   root: {
     padding: '47px 80px 0',
@@ -47,8 +50,7 @@ const useStyles = makeStyles({
 export default function ResetPasswordForm({ emailForReset, setLoginValues }) {
   const classes = useStyles();
   const [emailValue, setEmailValue] = useState(emailForReset);
-  const [hasInvalidEmailError, setHasInvalidEmailError] = useState(false);
-  const [hasNoSuchEmailError, setHasNoSuchEmailError] = useState(false);
+  const [errorsText, setErrorsText] = useState('');
 
   const goBack = () => {
     setLoginValues((prevState) => ({
@@ -58,42 +60,34 @@ export default function ResetPasswordForm({ emailForReset, setLoginValues }) {
   };
 
   const handleSubmit = () => {
-    if (emailValue === '' || hasInvalidEmailError) {
-      return;
-    }
+    const isCorrect = validateEmail(emailValue);
 
-    if (emailValue === 'mail@mail.ru') {
-      setLoginValues((prevState) => ({
-        ...prevState,
-        step: 3,
-        emailForReset: emailValue,
-      }));
-    } else {
-      setHasNoSuchEmailError(true);
-    }
-  };
-
-  const invalidEmailError = 'Неверный адрес электронной почты';
-  const noSuchEmailError = 'Адрес электронной почты не зарегистрирован';
-
-  const handleBlur = () => {
-    if (emailValue === '') {
-      setHasInvalidEmailError(false);
-    }
-
-    if (emailValue !== '' && emailValue.indexOf('@') < 0) {
-      setHasInvalidEmailError(true);
-    }
-  };
-
-  const handleChange = (e) => {
-    if (hasInvalidEmailError) {
-      if (emailValue !== '' && emailValue.indexOf('@') > 0) {
-        setHasInvalidEmailError(false);
+    if (isCorrect) {
+      if (emailValue === 'mail@mail.ru') {
+        setErrorsText('');
+        setLoginValues((prevState) => ({
+          ...prevState,
+          step: 3,
+          emailForReset: emailValue,
+        }));
+      } else {
+        setErrorsText(ERROR_TYPES.noSuchEmail);
       }
+    } else {
+      setErrorsText(ERROR_TYPES.invalidEmail);
     }
-    setEmailValue(e.target.value);
   };
+
+  // PREVIOUS VALUE
+  // const handleSubmit = () => {
+  //   if (emailValue === 'mail@mail.ru') {
+  //     setLoginValues((prevState) => ({
+  //       ...prevState,
+  //       step: 3,
+  //       emailForReset: emailValue,
+  //     }));
+  //   }
+  // };
 
   return (
     <>
@@ -106,15 +100,10 @@ export default function ResetPasswordForm({ emailForReset, setLoginValues }) {
             label='Электронная почта'
             variant='outlined'
             value={emailValue}
-            onBlur={handleBlur}
-            onChange={handleChange}
+            onChange={(e) => setEmailValue(e.target.value)}
+            error={!!errorsText}
+            helperText={errorsText}
           />
-          {hasInvalidEmailError && (
-            <span className={classes.errorMsg}>{invalidEmailError}</span>
-          )}
-          {hasNoSuchEmailError && (
-            <span className={classes.errorMsg}>{noSuchEmailError}</span>
-          )}
         </div>
 
         <Typography className={classes.helperText}>
@@ -140,7 +129,6 @@ export default function ResetPasswordForm({ emailForReset, setLoginValues }) {
               color='primary'
               onClick={handleSubmit}
               className={classes.btn}
-              disabled={emailValue === '' || hasInvalidEmailError}
             >
               Подтвердить
             </Button>
