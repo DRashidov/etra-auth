@@ -9,6 +9,8 @@ import RegisterIndividualsForm from './RegisterIndividualsForm';
 import RegisterLegalEntetiesForm from './RegisterLegalEntetiesForm';
 import RegisterSuccess from './RegisterSuccess';
 
+import { COUNTRY_CODES, COUNTRY_NAMES } from '../../constants/countries';
+
 const useStyles = makeStyles((theme) => ({
   radioBtnsRoot: {
     flexDirection: 'row',
@@ -30,8 +32,8 @@ const initialValuesIndividual = {
   firstName: '',
   fathersName: '',
   city: '',
-  country: '',
-  phoneNumber: '',
+  country: COUNTRY_NAMES.Russia,
+  phoneNumber: COUNTRY_CODES.Russia,
   email: '',
 };
 
@@ -42,8 +44,8 @@ const legalEntetiesFirstStep = {
   position: '',
   organisationName: '',
   inn: '',
-  country: '',
-  phoneNumber: '',
+  country: COUNTRY_NAMES.Russia,
+  phoneNumber: COUNTRY_CODES.Russia,
   email: '',
 };
 
@@ -82,11 +84,27 @@ export default function RegisterContainer() {
   );
 
   const handleIndividualChange = (prop) => (event) => {
-    setIndividualValues({ ...individualValues, [prop]: event.target.value });
+    if (prop === 'country') {
+      setIndividualValues({
+        ...individualValues,
+        [prop]: event.target.value,
+        phoneNumber: COUNTRY_CODES[event.target.value],
+      });
+    } else {
+      setIndividualValues({ ...individualValues, [prop]: event.target.value });
+    }
   };
 
   const handleFirstStepChange = (prop) => (event) => {
-    setFirstStepValues({ ...firstStepValues, [prop]: event.target.value });
+    if (prop === 'country') {
+      setFirstStepValues({
+        ...individualValues,
+        [prop]: event.target.value,
+        phoneNumber: COUNTRY_CODES[event.target.value],
+      });
+    } else {
+      setFirstStepValues({ ...individualValues, [prop]: event.target.value });
+    }
   };
 
   const handleSecondStepChange = (prop) => (event) => {

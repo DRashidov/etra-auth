@@ -6,6 +6,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -94,16 +97,36 @@ export default function RegisterIndividualsForm({
             value={individualValues.city}
             onChange={handleIndividualChange('city')}
           />
-          <TextField
-            id='country'
-            style={{ marginBottom: '30px' }}
-            fullWidth
-            type='text'
-            label='Страна мобильного оператора'
-            variant='outlined'
-            value={individualValues.country}
-            onChange={handleIndividualChange('country')}
-          />
+          <FormControl variant='outlined' className={classes.formControl} style={{ width: '100%'}}>
+            <InputLabel htmlFor='outlined-country-native-simple'>Страна мобильного оператора</InputLabel>
+            <Select
+              native
+              value={individualValues.country}
+              onChange={handleIndividualChange('country')}
+              label='Страна мобильного оператора'
+              style={{ marginBottom: '30px' }}
+              inputProps={{
+                name: 'country',
+                id: 'outlined-country-native-simple',
+              }}
+            >
+              <option value={"Russia"}>Россия</option>
+              <option value={"Azerbaijan"}>Азербайджан</option>
+              <option value={"Armenia"}>Армения</option>
+              <option value={"Ukraine"}>Украина</option>
+              <option value={"Belarus"}>Беларусь</option>
+              <option value={"Moldova"}>Молдова</option>
+              <option value={"Latvia"}>Латвия</option>
+              <option value={"Lithuania"}>Литва</option>
+              <option value={"Estonia"}>Эстония</option>
+              <option value={"Georgia"}>Грузия</option>
+              <option value={"Kazakhstan"}>Казахстан</option>
+              <option value={"Kyrgyzstan"}>Киргизия</option>
+              <option value={"Tajikistan"}>Таджикистан</option>
+              <option value={"Turkmenistan"}>Туркмения</option>
+              <option value={"Uzbekistan"}>Узбекистан</option>        
+            </Select>
+          </FormControl>
           <TextField
             id='phoneNumber'
             style={{ marginBottom: '30px' }}

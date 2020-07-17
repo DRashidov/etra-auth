@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +40,6 @@ export default function FirstStep({
   handleFirstStepChange,
 }) {
   const classes = useStyles();
-  const [isAgree, setIsAgree] = useState(true);;
 
   return (
     <div className={classes.root}>
@@ -105,16 +107,42 @@ export default function FirstStep({
             value={firstStepValues.inn}
             onChange={handleFirstStepChange('inn')}
           />
-          <TextField
-            id='country'
-            style={{ marginBottom: '30px' }}
-            fullWidth
-            type='text'
-            label='Страна мобильного оператора'
+          <FormControl
             variant='outlined'
-            value={firstStepValues.country}
-            onChange={handleFirstStepChange('country')}
-          />
+            className={classes.formControl}
+            style={{ width: '100%' }}
+          >
+            <InputLabel htmlFor='outlined-age-native-simple'>
+              Страна мобильного оператора
+            </InputLabel>
+            <Select
+              native
+              value={firstStepValues.country}
+              onChange={handleFirstStepChange('country')}
+              label='Страна мобильного оператора'
+              style={{ marginBottom: '30px' }}
+              inputProps={{
+                name: 'country',
+                id: 'outlined-country-native-simple',
+              }}
+            >
+              <option value={'Russia'}>Россия</option>
+              <option value={'Azerbaijan'}>Азербайджан</option>
+              <option value={'Armenia'}>Армения</option>
+              <option value={'Ukraine'}>Украина</option>
+              <option value={'Belarus'}>Беларусь</option>
+              <option value={'Moldova'}>Молдова</option>
+              <option value={'Latvia'}>Латвия</option>
+              <option value={'Lithuania'}>Литва</option>
+              <option value={'Estonia'}>Эстония</option>
+              <option value={'Georgia'}>Грузия</option>
+              <option value={'Kazakhstan'}>Казахстан</option>
+              <option value={'Kyrgyzstan'}>Киргизия</option>
+              <option value={'Tajikistan'}>Таджикистан</option>
+              <option value={'Turkmenistan'}>Туркмения</option>
+              <option value={'Uzbekistan'}>Узбекистан</option>
+            </Select>
+          </FormControl>
           <TextField
             id='phoneNumber'
             style={{ marginBottom: '30px' }}
@@ -127,7 +155,6 @@ export default function FirstStep({
           />
           <TextField
             id='email'
-            // style={{ marginBottom: '30px' }}
             fullWidth
             type='email'
             label='Электронная почта'
